@@ -1,0 +1,554 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXContainerItemProxy section */
+		CA0A88D12D9237040039AC45 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CA0A88B22D9237020039AC45 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CA0A88B92D9237020039AC45;
+			remoteInfo = ChatYT;
+		};
+		CA0A88DB2D9237040039AC45 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CA0A88B22D9237020039AC45 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CA0A88B92D9237020039AC45;
+			remoteInfo = ChatYT;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		CA0A88BA2D9237020039AC45 /* ChatYT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatYT.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA0A88D02D9237040039AC45 /* ChatYTTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChatYTTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA0A88DA2D9237040039AC45 /* ChatYTUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChatYTUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		CA0A88BC2D9237020039AC45 /* ChatYT */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ChatYT;
+			sourceTree = "<group>";
+		};
+		CA0A88D32D9237040039AC45 /* ChatYTTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ChatYTTests;
+			sourceTree = "<group>";
+		};
+		CA0A88DD2D9237040039AC45 /* ChatYTUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ChatYTUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CA0A88B72D9237020039AC45 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA0A88CD2D9237040039AC45 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA0A88D72D9237040039AC45 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CA0A88B12D9237020039AC45 = {
+			isa = PBXGroup;
+			children = (
+				CA0A88BC2D9237020039AC45 /* ChatYT */,
+				CA0A88D32D9237040039AC45 /* ChatYTTests */,
+				CA0A88DD2D9237040039AC45 /* ChatYTUITests */,
+				CA0A88BB2D9237020039AC45 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CA0A88BB2D9237020039AC45 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CA0A88BA2D9237020039AC45 /* ChatYT.app */,
+				CA0A88D02D9237040039AC45 /* ChatYTTests.xctest */,
+				CA0A88DA2D9237040039AC45 /* ChatYTUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CA0A88B92D9237020039AC45 /* ChatYT */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CA0A88E42D9237040039AC45 /* Build configuration list for PBXNativeTarget "ChatYT" */;
+			buildPhases = (
+				CA0A88B62D9237020039AC45 /* Sources */,
+				CA0A88B72D9237020039AC45 /* Frameworks */,
+				CA0A88B82D9237020039AC45 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				CA0A88BC2D9237020039AC45 /* ChatYT */,
+			);
+			name = ChatYT;
+			packageProductDependencies = (
+			);
+			productName = ChatYT;
+			productReference = CA0A88BA2D9237020039AC45 /* ChatYT.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CA0A88CF2D9237040039AC45 /* ChatYTTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CA0A88E72D9237040039AC45 /* Build configuration list for PBXNativeTarget "ChatYTTests" */;
+			buildPhases = (
+				CA0A88CC2D9237040039AC45 /* Sources */,
+				CA0A88CD2D9237040039AC45 /* Frameworks */,
+				CA0A88CE2D9237040039AC45 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CA0A88D22D9237040039AC45 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				CA0A88D32D9237040039AC45 /* ChatYTTests */,
+			);
+			name = ChatYTTests;
+			packageProductDependencies = (
+			);
+			productName = ChatYTTests;
+			productReference = CA0A88D02D9237040039AC45 /* ChatYTTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		CA0A88D92D9237040039AC45 /* ChatYTUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CA0A88EA2D9237040039AC45 /* Build configuration list for PBXNativeTarget "ChatYTUITests" */;
+			buildPhases = (
+				CA0A88D62D9237040039AC45 /* Sources */,
+				CA0A88D72D9237040039AC45 /* Frameworks */,
+				CA0A88D82D9237040039AC45 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CA0A88DC2D9237040039AC45 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				CA0A88DD2D9237040039AC45 /* ChatYTUITests */,
+			);
+			name = ChatYTUITests;
+			packageProductDependencies = (
+			);
+			productName = ChatYTUITests;
+			productReference = CA0A88DA2D9237040039AC45 /* ChatYTUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CA0A88B22D9237020039AC45 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1620;
+				LastUpgradeCheck = 1620;
+				TargetAttributes = {
+					CA0A88B92D9237020039AC45 = {
+						CreatedOnToolsVersion = 16.2;
+					};
+					CA0A88CF2D9237040039AC45 = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = CA0A88B92D9237020039AC45;
+					};
+					CA0A88D92D9237040039AC45 = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = CA0A88B92D9237020039AC45;
+					};
+				};
+			};
+			buildConfigurationList = CA0A88B52D9237020039AC45 /* Build configuration list for PBXProject "ChatYT" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CA0A88B12D9237020039AC45;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = CA0A88BB2D9237020039AC45 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CA0A88B92D9237020039AC45 /* ChatYT */,
+				CA0A88CF2D9237040039AC45 /* ChatYTTests */,
+				CA0A88D92D9237040039AC45 /* ChatYTUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CA0A88B82D9237020039AC45 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA0A88CE2D9237040039AC45 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA0A88D82D9237040039AC45 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CA0A88B62D9237020039AC45 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA0A88CC2D9237040039AC45 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA0A88D62D9237040039AC45 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CA0A88D22D9237040039AC45 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CA0A88B92D9237020039AC45 /* ChatYT */;
+			targetProxy = CA0A88D12D9237040039AC45 /* PBXContainerItemProxy */;
+		};
+		CA0A88DC2D9237040039AC45 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CA0A88B92D9237020039AC45 /* ChatYT */;
+			targetProxy = CA0A88DB2D9237040039AC45 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		CA0A88E22D9237040039AC45 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		CA0A88E32D9237040039AC45 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		CA0A88E52D9237040039AC45 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ChatYT/ChatYT.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"ChatYT/Preview Content\"";
+				DEVELOPMENT_TEAM = T9N2GSXY5T;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = TerminalGravity.ChatYT;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		CA0A88E62D9237040039AC45 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = ChatYT/ChatYT.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"ChatYT/Preview Content\"";
+				DEVELOPMENT_TEAM = T9N2GSXY5T;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = TerminalGravity.ChatYT;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		CA0A88E82D9237040039AC45 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T9N2GSXY5T;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = TerminalGravity.ChatYTTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ChatYT.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ChatYT";
+			};
+			name = Debug;
+		};
+		CA0A88E92D9237040039AC45 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T9N2GSXY5T;
+				GENERATE_INFOPLIST_FILE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = TerminalGravity.ChatYTTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ChatYT.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ChatYT";
+			};
+			name = Release;
+		};
+		CA0A88EB2D9237040039AC45 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T9N2GSXY5T;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = TerminalGravity.ChatYTUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = ChatYT;
+			};
+			name = Debug;
+		};
+		CA0A88EC2D9237040039AC45 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T9N2GSXY5T;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = TerminalGravity.ChatYTUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TEST_TARGET_NAME = ChatYT;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CA0A88B52D9237020039AC45 /* Build configuration list for PBXProject "ChatYT" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CA0A88E22D9237040039AC45 /* Debug */,
+				CA0A88E32D9237040039AC45 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CA0A88E42D9237040039AC45 /* Build configuration list for PBXNativeTarget "ChatYT" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CA0A88E52D9237040039AC45 /* Debug */,
+				CA0A88E62D9237040039AC45 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CA0A88E72D9237040039AC45 /* Build configuration list for PBXNativeTarget "ChatYTTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CA0A88E82D9237040039AC45 /* Debug */,
+				CA0A88E92D9237040039AC45 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CA0A88EA2D9237040039AC45 /* Build configuration list for PBXNativeTarget "ChatYTUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CA0A88EB2D9237040039AC45 /* Debug */,
+				CA0A88EC2D9237040039AC45 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CA0A88B22D9237020039AC45 /* Project object */;
+}
