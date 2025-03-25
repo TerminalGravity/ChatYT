@@ -20,6 +20,11 @@ struct ContentView: View {
     @State private var apiKeyConfigured: Bool = false
     @State private var isProcessingURL: Bool = false
     
+    // New state variables for modals
+    @State private var showYouTubeURLModal = false
+    @State private var showFilePickerModal = false
+    @State private var newYouTubeURL = ""
+    
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Conversation.createdAt, ascending: false)],
         animation: .default)
@@ -58,29 +63,37 @@ struct ContentView: View {
                                 .font(.headline)
                                 .frame(maxWidth: .infinity, alignment: .center)
                             
-                            HStack {
-                                TextField("Enter YouTube URL", text: $youtubeURL)
-                                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                                    .onSubmit {
-                                        processYoutubeUrl()
-                                    }
-                                    .disabled(isProcessingURL)
-                                
-                                if isProcessingURL {
+                            Button(action: {
+                                showNewConversationMenu()
+                            }) {
+                                HStack {
+                                    Image(systemName: "plus.circle.fill")
+                                        .font(.title2)
+                                        .foregroundColor(.blue)
+                                    
+                                    Text("New Conversation")
+                                        .fontWeight(.medium)
+                                }
+                                .frame(maxWidth: .infinity)
+                                .padding(.vertical, 8)
+                                .background(Color.blue.opacity(0.1))
+                                .cornerRadius(8)
+                            }
+                            .buttonStyle(.plain)
+                            .disabled(isProcessingURL)
+                            
+                            if isProcessingURL {
+                                HStack {
                                     ProgressView()
                                         .progressViewStyle(CircularProgressViewStyle())
                                         .scaleEffect(0.8)
-                                        .padding(.trailing, 4)
-                                } else {
-                                    Button(action: processYoutubeUrl) {
-                                        Image(systemName: "arrow.right.circle.fill")
-                                            .font(.title3)
-                                            .foregroundColor(.blue)
-                                    }
-                                    .buttonStyle(.borderless)
-                                    .disabled(youtubeURL.isEmpty)
-                                    .help("Start chat with this video")
+                                    
+                                    Text("Processing content...")
+                                        .font(.subheadline)
+                                        .foregroundColor(.secondary)
                                 }
+                                .frame(maxWidth: .infinity, alignment: .center)
+                                .padding(.vertical, 8)
                             }
                             
                             if showUrlError {
