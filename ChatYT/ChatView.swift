@@ -26,6 +26,9 @@ struct ChatView: View {
     // YouTube video player
     @State private var showVideoPlayer = false
     @State private var videoMetadata: [String: String]? = nil
+    @State private var isLocalFile = false
+    @State private var localFilePath: String? = nil
+    @State private var localFileName: String? = nil
     
     init(conversation: Conversation) {
         self.conversation = conversation
@@ -208,7 +211,7 @@ struct ChatView: View {
                 HStack {
                     Spacer()
                     
-                    Text("YouTube Video")
+                    Text(isLocalFile ? "Media Player" : "YouTube Video")
                         .font(.headline)
                         .padding()
                     
@@ -224,8 +227,13 @@ struct ChatView: View {
                 .background(Color(NSColor.windowBackgroundColor))
                 
                 if let videoID = conversation.videoID {
-                    YouTubePlayerView(videoID: videoID)
-                        .frame(width: 800, height: 450)
+                    if isLocalFile {
+                        LocalMediaPlayerView(title: conversation.title ?? "Local Media")
+                            .frame(width: 800, height: 450)
+                    } else {
+                        YouTubePlayerView(videoID: videoID)
+                            .frame(width: 800, height: 450)
+                    }
                 }
             }
             .frame(width: 800, height: 500)
@@ -234,6 +242,11 @@ struct ChatView: View {
             ExportView(conversation: conversation, format: $exportFormat)
         }
         .onAppear {
+            // Check if this is a local file
+            if let videoID = conversation.videoID {
+                isLocalFile = videoID.hasPrefix("local_file_")
+            }
+            
             if messages.isEmpty {
                 initializeChat()
             }
@@ -241,170 +254,149 @@ struct ChatView: View {
     }
     
     private func initializeChat() {
-        // Check if API key is set
-        if !GeminiService.shared.isAPIKeySet {
-            addMessage(content: "⚠️ Gemini API key not configured. Please set it in settings before continuing.", isUser: false)
-            return
-        }
-        
         initialSummaryStarted = true
         isProcessing = true
-        loadingMessage = "Analyzing video content..."
         
-        // Get video metadata from YouTube Data API
         Task {
-            if let videoID = conversation.videoID {
-                // Try to get video details
-                videoMetadata = await YouTubeDataService.shared.extractVideoDetails(videoID)
-                
-                // Update conversation title if available and not already set with a meaningful title
-                if let title = videoMetadata?["title"], 
-                   conversation.title == nil || conversation.title?.hasPrefix("YouTube Video:") == true {
-                    conversation.title = title
-                    try? viewContext.save()
-                }
-                
-                // Add welcome message
-                let videoTitle = videoMetadata?["title"] ?? "this YouTube video"
-                addMessage(content: "Welcome to ChatYT! I'll help you analyze '\(videoTitle)'.", isUser: false)
-                
-                // Build an enhanced prompt with video metadata
-                var enhancedPrompt = ""
-                if let metadata = videoMetadata {
-                    enhancedPrompt = "Summarize the following YouTube video:\n"
-                    enhancedPrompt += "Title: \(metadata["title"] ?? "Unknown")\n"
-                    enhancedPrompt += "Channel: \(metadata["channelTitle"] ?? "Unknown")\n"
-                    if let description = metadata["description"], !description.isEmpty {
-                        enhancedPrompt += "Description: \(description)\n"
-                    }
-                    enhancedPrompt += "Video ID: \(videoID)"
-                } else {
-                    // Fallback to default prompt
-                    let settings = getOrCreateSettings()
-                    enhancedPrompt = settings.promptTemplate?.replacingOccurrences(of: "{videoID}", with: videoID) ?? 
-                        "Summarize the following YouTube video in detail. Video ID: \(videoID)"
-                }
-                
-                // Generate the initial summary
-                loadingMessage = "Generating summary..."
-                let initialResponse = await GeminiService.shared.processYouTubeVideo(
-                    videoID: videoID,
-                    prompt: enhancedPrompt
-                )
-                
-                if let response = initialResponse {
-                    addMessage(content: response, isUser: false)
-                } else {
-                    addMessage(content: "I couldn't generate a summary for this video. Please try again or ask a specific question about the video.", isUser: false)
-                }
+            // Set loading message based on content type
+            if let localFilePath = conversation.localFilePath, !localFilePath.isEmpty {
+                isLocalFile = true
+                self.localFilePath = localFilePath
+                self.localFileName = conversation.localFileName
+                loadingMessage = "Analyzing local video file..."
             } else {
-                addMessage(content: "No video ID found. Please try again with a valid YouTube video.", isUser: false)
+                isLocalFile = false
+                loadingMessage = "Analyzing YouTube content..."
             }
-            isProcessing = false
+            
+            // Start analysis based on content type
+            if isLocalFile, let filePath = localFilePath {
+                await analyzeLocalVideo(filePath: filePath, fileName: localFileName ?? "")
+            } else if let videoID = conversation.videoID {
+                await analyzeYouTubeVideo(videoID: videoID)
+            } else {
+                // No content to analyze
+                createSystemMessage(content: "No video content to analyze. Please ask a question to start a conversation.")
+                isProcessing = false
+            }
         }
+    }
+    
+    private func analyzeYouTubeVideo(videoID: String) async {
+        // Default prompt for YouTube analysis
+        let defaultPrompt = "Please analyze this YouTube video with ID {videoID}. Provide a detailed summary of its content, key topics, main arguments or points, and any notable information. If it's a long video, focus on the most important parts."
+        
+        let prompt = conversation.analysisPrompt ?? defaultPrompt
+        
+        // Fetch video data and summary from Gemini
+        if let response = await GeminiService.shared.processYouTubeVideo(videoID: videoID, prompt: prompt) {
+            // Create a message with the response
+            createSystemMessage(content: response)
+        } else {
+            // Handle error case
+            createSystemMessage(content: "⚠️ I couldn't analyze this YouTube video. Please check if the video is available or try a different video.")
+        }
+        
+        // End loading state
+        isProcessing = false
+    }
+    
+    private func analyzeLocalVideo(filePath: String, fileName: String) async {
+        // Default prompt for local video analysis
+        let defaultPrompt = "Please analyze this local video file. Provide any information you can extract from its metadata and suggest possible ways I can interact with this content."
+        
+        let prompt = conversation.analysisPrompt ?? defaultPrompt
+        
+        // Fetch analysis from Gemini for the local file
+        if let response = await GeminiService.shared.processLocalVideo(filePath: filePath, fileName: fileName, prompt: prompt) {
+            // Create a message with the response
+            createSystemMessage(content: response)
+        } else {
+            // Handle error case
+            createSystemMessage(content: "⚠️ I couldn't analyze this local video file. Please check if the file is accessible or try a different file.")
+        }
+        
+        // End loading state
+        isProcessing = false
     }
     
     private func sendMessage() {
-        // Check if API key is set
-        if !GeminiService.shared.isAPIKeySet {
-            addMessage(content: "⚠️ Gemini API key not configured. Please set it in settings before continuing.", isUser: false)
-            return
-        }
+        guard !currentInput.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
         
-        let userMessage = currentInput.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !userMessage.isEmpty else { return }
+        // Create user message
+        let userMessage = Message(context: viewContext)
+        userMessage.id = UUID()
+        userMessage.content = currentInput
+        userMessage.timestamp = Date()
+        userMessage.isFromUser = true
+        userMessage.conversation = conversation
         
-        // Add user message to chat
-        addMessage(content: userMessage, isUser: true)
+        // Update conversation's modified timestamp
+        conversation.modifiedAt = Date()
+        
+        // Clear input field and save
+        saveContext()
         currentInput = ""
         
-        // Generate response
+        // Start processing system response
         isProcessing = true
-        loadingMessage = "Thinking..."
+        loadingMessage = "Generating response..."
         
         Task {
-            let prompt = createContextualPrompt(userMessage)
-            if let response = await generateGeminiResponse(prompt: prompt) {
-                addMessage(content: response, isUser: false)
+            // Handle message differently depending on content type
+            if isLocalFile, let filePath = localFilePath {
+                // For local files, include the file path in the prompt context
+                let contextPrompt = "The user is asking about a local video file: \"\(localFileName ?? "Unknown")\". Path: \(filePath). " + (userMessage.content ?? "")
+                await generateResponse(prompt: contextPrompt)
+            } else if let videoID = conversation.videoID {
+                // For YouTube videos, include video ID in context
+                let contextPrompt = "The user is asking about YouTube video ID: \(videoID). " + (userMessage.content ?? "")
+                await generateResponse(prompt: contextPrompt)
             } else {
-                addMessage(content: "I couldn't generate a response. Please try again.", isUser: false)
+                // Generic conversation without specific content
+                await generateResponse(prompt: userMessage.content ?? "")
             }
-            isProcessing = false
         }
     }
     
-    private func addMessage(content: String, isUser: Bool) {
-        let newMessage = Message(context: viewContext)
+    private func generateResponse(prompt: String) async {
+        // Get response from Gemini service
+        if let response = await GeminiService.shared.generateResponse(prompt: prompt) {
+            // Create a message with the response
+            createSystemMessage(content: response)
+        } else {
+            // Handle error case
+            createSystemMessage(content: "⚠️ I couldn't generate a response at this time. Please try again later.")
+        }
+        
+        // End loading state
+        isProcessing = false
+    }
+    
+    private func createSystemMessage(content: String) {
+        // Ensure we're using the conversation's managed object context
+        let context = conversation.managedObjectContext ?? viewContext
+        
+        // Create message in the same context as the conversation
+        let newMessage = Message(context: context)
         newMessage.content = content
-        newMessage.isUser = isUser
+        newMessage.isFromUser = false
         newMessage.timestamp = Date()
         newMessage.conversation = conversation
         
         do {
-            try viewContext.save()
+            try context.save()
         } catch {
             print("Error saving message: \(error.localizedDescription)")
         }
     }
     
-    private func createContextualPrompt(_ userMessage: String) -> String {
-        // Create a prompt that includes context from previous messages
-        guard let videoID = conversation.videoID else {
-            return userMessage
-        }
-        
-        var contextualPrompt = "For YouTube video"
-        
-        // Add metadata if available
-        if let metadata = videoMetadata {
-            contextualPrompt += " titled '\(metadata["title"] ?? "Unknown")'"
-            if let channelTitle = metadata["channelTitle"] {
-                contextualPrompt += " by \(channelTitle)"
-            }
-        } 
-        
-        contextualPrompt += " with ID \(videoID), the user asks: \(userMessage)\n\n"
-        contextualPrompt += "Previous conversation context:\n"
-        
-        // Add up to 10 previous message pairs for context
-        let recentMessagePairs = Array(messages.suffix(10))
-        for message in recentMessagePairs {
-            let prefix = message.isUser ? "User" : "Assistant"
-            contextualPrompt += "\(prefix): \(message.content ?? "")\n"
-        }
-        
-        return contextualPrompt
-    }
-    
-    private func generateGeminiResponse(prompt: String) async -> String? {
-        // Use the GeminiService to generate a response
-        return await GeminiService.shared.generateResponse(prompt: prompt)
-    }
-    
-    private func getOrCreateSettings() -> Settings {
-        let fetchRequest: NSFetchRequest<Settings> = Settings.fetchRequest()
-        
-        do {
-            let results = try viewContext.fetch(fetchRequest)
-            if let settings = results.first {
-                return settings
-            }
-        } catch {
-            print("Error fetching settings: \(error.localizedDescription)")
-        }
-        
-        // Create default settings if none exist
-        let newSettings = Settings(context: viewContext)
-        newSettings.promptTemplate = "Summarize the following YouTube video in detail. Video ID: {videoID}"
-        newSettings.exportFileFormat = FileFormat.markdown.rawValue
-        
+    private func saveContext() {
         do {
             try viewContext.save()
         } catch {
-            print("Error creating settings: \(error.localizedDescription)")
+            print("Error saving context: \(error.localizedDescription)")
         }
-        
-        return newSettings
     }
     
     private func scrollToBottom() {
@@ -453,24 +445,24 @@ struct MessageView: View {
     
     var body: some View {
         HStack(alignment: .top) {
-            if !message.isUser {
+            if !message.isFromUser {
                 Image(systemName: "brain.head.profile")
                     .font(.title3)
                     .foregroundColor(.blue)
                     .padding(.top, 6)
             }
             
-            VStack(alignment: message.isUser ? .trailing : .leading, spacing: 4) {
+            VStack(alignment: message.isFromUser ? .trailing : .leading, spacing: 4) {
                 HStack {
-                    if message.isUser {
+                    if message.isFromUser {
                         Spacer()
                     }
                     
-                    VStack(alignment: message.isUser ? .trailing : .leading, spacing: 8) {
-                        Text(message.isUser ? "You" : "ChatYT")
+                    VStack(alignment: message.isFromUser ? .trailing : .leading, spacing: 8) {
+                        Text(message.isFromUser ? "You" : "ChatYT")
                             .font(.caption)
                             .fontWeight(.medium)
-                            .foregroundColor(message.isUser ? .blue : .secondary)
+                            .foregroundColor(message.isFromUser ? .blue : .secondary)
                         
                         Text(message.content ?? "")
                             .textSelection(.enabled)
@@ -478,12 +470,12 @@ struct MessageView: View {
                     }
                     .padding(.horizontal, 16)
                     .padding(.vertical, 12)
-                    .background(message.isUser 
+                    .background(message.isFromUser 
                                 ? Color.blue.opacity(0.15) 
                                 : Color(NSColor.controlBackgroundColor))
                     .cornerRadius(16)
                     
-                    if !message.isUser {
+                    if !message.isFromUser {
                         Spacer()
                     }
                 }
@@ -495,7 +487,7 @@ struct MessageView: View {
                     .padding(.bottom, 4)
             }
             
-            if message.isUser {
+            if message.isFromUser {
                 Image(systemName: "person.circle.fill")
                     .font(.title3)
                     .foregroundColor(.blue)
@@ -631,7 +623,7 @@ struct ExportView: View {
         let messageArray = messages.map { message -> [String: Any] in
             return [
                 "content": message.content ?? "",
-                "isUser": message.isUser,
+                "isUser": message.isFromUser,
                 "timestamp": ISO8601DateFormatter().string(from: message.timestamp ?? Date())
             ]
         }
@@ -658,7 +650,7 @@ struct ExportView: View {
         markdown += "## Conversation\n\n"
         
         for message in messages {
-            let author = message.isUser ? "**User**" : "**Assistant**"
+            let author = message.isFromUser ? "**User**" : "**Assistant**"
             markdown += "\(author): \(message.content ?? "")\n\n"
         }
         
@@ -672,7 +664,7 @@ struct ExportView: View {
         text += "CONVERSATION:\n\n"
         
         for message in messages {
-            let author = message.isUser ? "User" : "Assistant"
+            let author = message.isFromUser ? "User" : "Assistant"
             text += "\(author): \(message.content ?? "")\n\n"
         }
         
@@ -690,13 +682,13 @@ struct ChatView_Previews: PreviewProvider {
         
         let message1 = Message(context: context)
         message1.content = "What is this video about?"
-        message1.isUser = true
+        message1.isFromUser = true
         message1.timestamp = Date()
         message1.conversation = conversation
         
         let message2 = Message(context: context)
         message2.content = "This video is 'Never Gonna Give You Up' by Rick Astley, a popular music video from the 1980s that became an internet meme known as 'Rickrolling'."
-        message2.isUser = false
+        message2.isFromUser = false
         message2.timestamp = Date().addingTimeInterval(60)
         message2.conversation = conversation
         
@@ -704,5 +696,29 @@ struct ChatView_Previews: PreviewProvider {
         
         return ChatView(conversation: conversation)
             .environment(\.managedObjectContext, context)
+    }
+}
+
+struct LocalMediaPlayerView: View {
+    let title: String
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            Image(systemName: "film")
+                .font(.system(size: 64))
+                .foregroundColor(.secondary)
+            
+            Text(title)
+                .font(.title)
+            
+            Text("Local media player functionality would be implemented here")
+                .foregroundColor(.secondary)
+            
+            Text("This would integrate with AVKit for playback of local media files")
+                .font(.caption)
+                .foregroundColor(.secondary)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color(NSColor.windowBackgroundColor))
     }
 } 

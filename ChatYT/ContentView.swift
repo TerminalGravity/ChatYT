@@ -24,6 +24,8 @@ struct ContentView: View {
     @State private var showYouTubeURLModal = false
     @State private var showFilePickerModal = false
     @State private var newYouTubeURL = ""
+    @State private var showNewConversationPopover = false
+    @State private var newConversationButtonId = UUID() // For popover anchor
     
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \Conversation.createdAt, ascending: false)],
@@ -64,7 +66,7 @@ struct ContentView: View {
                                 .frame(maxWidth: .infinity, alignment: .center)
                             
                             Button(action: {
-                                showNewConversationMenu()
+                                showNewConversationPopover = true
                             }) {
                                 HStack {
                                     Image(systemName: "plus.circle.fill")
@@ -81,6 +83,40 @@ struct ContentView: View {
                             }
                             .buttonStyle(.plain)
                             .disabled(isProcessingURL)
+                            .id(newConversationButtonId)
+                            .popover(isPresented: $showNewConversationPopover, arrowEdge: .bottom) {
+                                VStack(spacing: 10) {
+                                    Button(action: {
+                                        showYouTubeURLModal = true
+                                        showNewConversationPopover = false
+                                    }) {
+                                        HStack {
+                                            Image(systemName: "link")
+                                            Text("Add YouTube URL")
+                                        }
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                    }
+                                    .buttonStyle(.plain)
+                                    .padding(.vertical, 5)
+                                    
+                                    Divider()
+                                    
+                                    Button(action: {
+                                        showNewConversationPopover = false
+                                        openMediaFilePicker()
+                                    }) {
+                                        HStack {
+                                            Image(systemName: "film")
+                                            Text("Upload Video/Audio")
+                                        }
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                    }
+                                    .buttonStyle(.plain)
+                                    .padding(.vertical, 5)
+                                }
+                                .padding()
+                                .frame(width: 200)
+                            }
                             
                             if isProcessingURL {
                                 HStack {
@@ -272,6 +308,20 @@ struct ContentView: View {
         }
         .sheet(isPresented: $settingsPresented) {
             SettingsView()
+        }
+        .sheet(isPresented: $showYouTubeURLModal) {
+            YouTubeURLInputModal(
+                isPresented: $showYouTubeURLModal,
+                url: $newYouTubeURL,
+                onSubmit: {
+                    if !newYouTubeURL.isEmpty {
+                        youtubeURL = newYouTubeURL
+                        processYoutubeUrl()
+                        newYouTubeURL = ""
+                    }
+                }
+            )
+            .frame(width: 450, height: 200)
         }
         .onAppear {
             checkAPIKeyStatus()
@@ -572,6 +622,109 @@ struct ContentView: View {
     
     private func checkAPIKeyStatus() {
         apiKeyConfigured = GeminiService.shared.isAPIKeySet
+    }
+    
+    // Method to open the file picker for media files
+    private func openMediaFilePicker() {
+        let openPanel = NSOpenPanel()
+        openPanel.title = "Select a video or audio file"
+        openPanel.allowsMultipleSelection = false
+        openPanel.canChooseDirectories = false
+        openPanel.canChooseFiles = true
+        openPanel.allowedContentTypes = [.movie, .audio, .mpeg4Movie, .quickTimeMovie, .mpeg, .mp3]
+        
+        openPanel.begin { response in
+            if response == .OK, let url = openPanel.url {
+                handleLocalMediaFile(url: url)
+            }
+        }
+    }
+    
+    private func handleLocalMediaFile(url: URL) {
+        // Start processing indicator
+        isProcessingURL = true
+        showUrlError = false
+        
+        // Get file name and path
+        let fileName = url.lastPathComponent
+        let filePath = url.path
+        
+        Task {
+            do {
+                // Check if file exists and is readable
+                guard FileManager.default.fileExists(atPath: filePath) else {
+                    throw NSError(domain: "FileError", code: 404, userInfo: [NSLocalizedDescriptionKey: "File not found"])
+                }
+                
+                // Create a unique identifier for the local file
+                let fileID = "local_file_\(UUID().uuidString)"
+                
+                // Create a new conversation for this local file
+                let newConversation = Conversation(context: viewContext)
+                newConversation.id = UUID()
+                newConversation.videoID = fileID // Still using videoID field for compatibility
+                newConversation.title = fileName // Use filename as title
+                newConversation.createdAt = Date()
+                newConversation.modifiedAt = Date()
+                newConversation.localFilePath = filePath // Store the actual file path
+                newConversation.localFileName = fileName // Store the filename separately
+                
+                // Save the context
+                try viewContext.save()
+                
+                // Set as selected conversation
+                selectedConversation = newConversation
+                
+                // Reset UI state
+                isProcessingURL = false
+            } catch {
+                // Handle errors
+                isProcessingURL = false
+                showUrlError = true
+                urlErrorMessage = "Error processing file: \(error.localizedDescription)"
+                print("File error: \(error.localizedDescription)")
+            }
+        }
+    }
+}
+
+// YouTube URL Input Modal
+struct YouTubeURLInputModal: View {
+    @Binding var isPresented: Bool
+    @Binding var url: String
+    var onSubmit: () -> Void
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            Text("Enter YouTube URL")
+                .font(.headline)
+            
+            TextField("YouTube URL or Video ID", text: $url)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .frame(width: 400)
+                .onSubmit {
+                    onSubmit()
+                    isPresented = false
+                }
+            
+            HStack(spacing: 16) {
+                Button("Cancel") {
+                    isPresented = false
+                }
+                .keyboardShortcut(.escape)
+                
+                Button("OK") {
+                    onSubmit()
+                    isPresented = false
+                }
+                .keyboardShortcut(.return)
+                .buttonStyle(.borderedProminent)
+            }
+        }
+        .padding(24)
+        .background(Color(NSColor.windowBackgroundColor))
+        .cornerRadius(12)
+        .shadow(radius: 5)
     }
 }
 
